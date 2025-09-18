@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator - Fitness Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <header class="bg-purple-600 text-white py-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center px-6">
+            <img src="images/logo.png" alt="Fitness Logo" class="w-16 h-16">
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="index.html" class="hover:text-gray-200">Home</a></li>
+                    <li><a href="about_us.html" class="hover:text-gray-200">About Us</a></li>
+                    <li><a href="contact.html" class="hover:text-gray-200">Contact</a></li>
+                    <li><a href="login.html" class="hover:text-gray-200">Login</a></li>
+                    <li><a href="signup.html" class="hover:text-gray-200">Signup</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <section class="container mx-auto text-center p-10">
+        <h2 class="text-4xl font-bold text-purple-700 mb-6">BMI Calculator</h2>
+        <p class="text-xl text-gray-700 mb-4">Enter your details to calculate your BMI.</p>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
+            <label for="weight" class="block text-gray-700">Weight (kg):</label>
+            <input type="number" id="weight" class="w-full p-2 border rounded-md mb-4" placeholder="Enter weight" title="Enter your weight in kilograms">
+            
+            <label for="height" class="block text-gray-700">Height (cm):</label>
+            <input type="number" id="height" class="w-full p-2 border rounded-md mb-4" placeholder="Enter height" title="Enter your height in centimeters">
+            
+            <button onclick="calculateBMI()" class="bg-blue-600 text-white px-6 py-2 rounded shadow-md hover:bg-blue-700 transition">Calculate BMI</button>
+            
+            <p id="bmiResult" class="text-lg text-gray-800 mt-4 font-bold"></p>
+            <p id="bmiCategory" class="text-lg text-gray-700"></p>
+            <p id="healthyWeight" class="text-sm text-gray-600"></p>
+            
+            <div id="dietSelection" class="hidden mt-6">
+                <p class="text-lg text-gray-700 mb-2">Select your food preference:</p>
+                <label for="foodPreference" class="block text-gray-700">Food Preference:</label>
+                <select id="foodPreference" class="w-full p-2 border rounded-md" title="Select your dietary preference">
+                    <option value="">--Select--</option>
+                    <option value="vegetarian">Vegetarian</option>
+                    <option value="non_vegetarian">Non-Vegetarian</option>
+                </select>
+                
+                <button onclick="navigateToDiet()" id="dietButton" class="mt-4 bg-green-600 text-white px-6 py-2 rounded shadow-md hover:bg-green-700 transition hidden">Get Diet Plan & Exercises</button>
+            </div>
+        </div>
+    </section>
+    
+    <script>
+        function calculateBMI() {
+            let weight = document.getElementById("weight").value;
+            let height = document.getElementById("height").value;
+            
+            if (weight && height) {
+                let bmi = (weight / ((height / 100) ** 2)).toFixed(2);
+                let category = "";
+                if (bmi < 18.5) category = "Underweight";
+                else if (bmi >= 18.5 && bmi < 25) category = "Normal weight";
+                else if (bmi >= 25 && bmi < 30) category = "Overweight";
+                else category = "Obese";
+                
+                let minWeight = (18.5 * (height / 100) ** 2).toFixed(1);
+                let maxWeight = (25 * (height / 100) ** 2).toFixed(1);
+                
+                document.getElementById("bmiResult").innerText = "Your BMI is: " + bmi;
+                document.getElementById("bmiCategory").innerText = "Category: " + category;
+                document.getElementById("healthyWeight").innerText = `Healthy weight range for your height: ${minWeight} kg - ${maxWeight} kg`;
+                
+                document.getElementById("dietSelection").classList.remove("hidden");
+            } else {
+                alert("Please enter both weight and height.");
+            }
+        }
+        
+        function navigateToDiet() {
+            let preference = document.getElementById("foodPreference").value;
+            if (preference === "vegetarian") {
+                window.location.href = "veg.html";
+            } else if (preference === "non_vegetarian") {
+                window.location.href = "nonveg.html";
+            } else {
+                alert("Please select a food preference.");
+            }
+        }
+        
+        document.getElementById("foodPreference").addEventListener("change", function() {
+            document.getElementById("dietButton").classList.remove("hidden");
+        });
+    </script>
+</body>
+</html>
